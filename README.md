@@ -34,4 +34,3 @@ A fase final foca na **estabilidade do aprendizado** em ambientes que mudam de d
 
 > **Dica de Engenharia:** Para o Nível 1, você pode usar o **CodeCombat** como inspiração para a interface, mas implementar a lógica de `pathfinding` em um repositório Python separado para garantir total controle sobre o custo computacional.
 
-Gostaria que eu detalhasse a **função de recompensa (Reward Function)** específica para o ambiente de Parkour do Nível 3?
