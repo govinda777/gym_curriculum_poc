@@ -67,6 +67,16 @@ PYTHONPATH=. python3 level_3_curriculum/train_curriculum.py
 PYTHONPATH=. python3 level_3_curriculum/verify_generalization.py
 ```
 
+### 🧪 Testes BDD (Unit, Integration, E2E)
+A POC conta com uma suíte de testes seguindo a metodologia BDD (Behavior Driven Development).
+```bash
+# Instalar dependências de teste
+pip install pytest pytest-bdd
+
+# Executar todos os testes
+PYTHONPATH=. pytest tests/test_bdd.py
+```
+
 ---
 
 ## 📊 Fluxo de Aprendizado (Roadmap)

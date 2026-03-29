@@ -32,6 +32,9 @@ Average Reward: 88.45
 Success! The agent demonstrated generalization in a procedural environment.
 ```
 
+### 🖼️ Visualização do Ambiente
+![Parkour Environment](parkour_viz.png)
+
 ## 🧠 Conceitos Chave
 ### Curriculum Learning (Escalonamento de Dificuldade)
 Em vez de jogar o agente em um nível impossível, o sistema começa com obstáculos fáceis e aumenta a complexidade. Isso evita a "falha catastrófica" (catastrophic forgetting).

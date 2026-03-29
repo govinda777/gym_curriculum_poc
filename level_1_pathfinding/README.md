@@ -27,6 +27,9 @@ Agent Agent 1 reached (29, 29)!
 Agent Agent 2 reached (29, 0)!
 ```
 
+### 🖼️ Visualização do Caminho
+![A* Pathfinding Visualization](pathfinding_viz.png)
+
 ## 🧠 Conceitos Chave
 ### Pathfinding (A*)
 O algoritmo A* combina a distância percorrida com uma estimativa (heurística) da distância restante para encontrar o caminho ideal rapidamente.
