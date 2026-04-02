@@ -1,0 +1,141 @@
+📘 Documentação — Experimento CartPole (Gymnasium)
+🎯 Objetivo
+
+Executar o ambiente CartPole usando a biblioteca Gymnasium, com suporte a renderização gráfica.
+
+📦 Requisitos
+🔧 Sistema
+Windows, Linux ou macOS
+🐍 Python
+✅ Recomendado Python 3.10 ou 3.11
+❌ Evitar Python 3.12+ (especialmente 3.14 — incompatível com pygame)
+⚠️ Problema conhecido
+
+O pacote pygame (necessário para renderização) não funciona corretamente em versões recentes do Python.
+
+👉 Por isso usamos Python 3.11
+
+🚀 Instalação
+1. Instalar Python 3.11
+
+Baixe e instale o Python 3.11
+
+Durante a instalação
+✔ Marque Add Python to PATH
+2. Criar ambiente virtual (recomendado)
+
+No terminal
+
+python -m venv venv
+
+Ativar
+
+Windows
+venvScriptsactivate
+LinuxmacOS
+source venvbinactivate
+3. Instalar dependências
+pip install gymnasium[classic-control]
+
+Isso instala
+
+gymnasium
+numpy
+pygame (para renderização)
+▶️ Execução
+python cartpole.py
+🧪 Código de exemplo
+import gymnasium as gym
+
+env = gym.make(CartPole-v1, render_mode=human)
+obs, _ = env.reset()
+
+for _ in range(1000)
+    action = env.action_space.sample()  # ações aleatórias
+
+    obs, reward, terminated, truncated, _ = env.step(action)
+
+    if terminated or truncated
+        obs, _ = env.reset()
+
+env.close()
+🎮 Controle do ambiente
+
+O CartPole não é um jogo tradicional
+
+Ações possíveis
+0 → esquerda
+1 → direita
+
+Por padrão
+
+O agente executa ações aleatórias
+O comportamento parece “caótico”
+🧠 Execução sem renderização (opcional)
+
+Se não quiser usar interface gráfica
+
+env = gym.make(CartPole-v1)
+
+👉 Remove dependência do pygame
+
+🛠️ Solução de problemas
+❌ Erro ModuleNotFoundError gymnasium
+pip install gymnasium
+❌ Erro No module named pygame
+pip install pygame
+
+Se falhar
+👉 Você está usando Python incompatível → usar 3.11
+
+❌ Erro build do pygame falha
+
+Causa
+
+Python muito novo (ex 3.14)
+
+Solução
+
+Instalar Python 3.11
+❌ Import amarelo no editor
+
+Possíveis causas
+
+Import não usado
+Interpretador Python incorreto
+
+Solução
+
+Selecionar o Python correto no editor
+📁 Estrutura recomendada
+cartpole-project
+│
+├── venv
+├── cartpole.py
+└── README.md
+🔄 Reprodutibilidade
+
+Para rodar em qualquer máquina
+
+Instalar Python 3.11
+Clonarcopiar projeto
+Criar ambiente virtual
+Instalar dependências
+Executar script
+📌 Dependências principais
+Gymnasium
+pygame
+numpy
+🧠 Próximos passos (opcional)
+Implementar agente inteligente (RL)
+Usar
+Q-learning
+DQN
+PPO
+✔️ Conclusão
+
+Esse setup garante
+
+✅ Compatibilidade total
+✅ Execução em qualquer máquina
+✅ Base pronta para experimentos de IA
