@@ -37,9 +37,13 @@ class CartPoleHUD:
         if steps > self.high_score:
             self.high_score = steps
 
-        self.angle_history.append(angle)
+        # Ensure values are float to avoid potential numpy type issues
+        self.angle_history.append(float(angle))
         if len(self.angle_history) > self.max_history:
             self.angle_history.pop(0)
+
+    def reset_history(self):
+        self.angle_history = []
 
     def draw(self, env, steps, angle, position, action, start_time):
         # 1. Expand screen width if not already expanded
@@ -94,15 +98,17 @@ class CartPoleHUD:
             points = []
             for i, h_angle in enumerate(self.angle_history):
                 # Map angle to graph coordinates
-                x = graph_rect.left + (i / (self.max_history - 1)) * graph_rect.width
+                x_val = graph_rect.left + (i / (self.max_history - 1)) * graph_rect.width
                 # Map angle (-24 to 24 degrees) to graph height
                 # Ensure values are within range to prevent drawing outside graph
-                y_deg = np.degrees(h_angle)
+                y_deg = float(np.degrees(h_angle))
                 y_ratio = (y_deg + 24) / 48
-                y_ratio = max(0, min(1, y_ratio))
-                y = graph_rect.bottom - y_ratio * graph_rect.height
-                points.append((int(x), int(y)))
-            pygame.draw.lines(screen, self.COLOR_GRAPH, False, points, 2)
+                y_ratio = max(0.0, min(1.0, y_ratio))
+                y_val = graph_rect.bottom - y_ratio * graph_rect.height
+                points.append((int(x_val), int(y_val)))
+
+            if len(points) >= 2:
+                pygame.draw.lines(screen, self.COLOR_GRAPH, False, points, 2)
 
     def _draw_text_box(self, screen, text, pos, color):
         # Draw background box for better legibility
@@ -141,6 +147,9 @@ def run_cartpole(episodes=1, max_steps=1000, render_mode="human", target_seconds
             episode += 1
             print(f"\n🎬 Episódio {episode} iniciado.")
             
+            if hud:
+                hud.reset_history()
+
             start_time = time.time()
             for step in range(max_steps):
                 if render_mode == "human":
