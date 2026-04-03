@@ -1,0 +1,45 @@
+version: '3'
+
+vars:
+  PYTHON: python
+
+tasks:
+  setup:
+    desc: Configura o ambiente virtual e instala as dependências
+    cmds:
+      - python -m venv venv
+      - "{{if eq OS \"windows\"}}.\\venv\\Scripts\\pip{{else}}./venv/bin/pip{{end}} install gymnasium[classic-control] pygame"
+    status:
+      - test -d venv
+
+  run:
+    desc: Executa a simulação padrão (1 episódio, renderização ativa)
+    cmds:
+      - python cartpole.py --episodes 1 --render human
+
+  run:many:
+    desc: Executa a simulação continuamente até ser interrompido ou atingir o limite de episódios
+    cmds:
+      - python cartpole.py --episodes {{.EPISODES | default -1}} --render human
+
+  run:stable:
+    desc: Executa o agente (aleatório) até que ele consiga ficar estável por 5 segundos
+    cmds:
+      - python cartpole.py --stable 5.0 --episodes -1 --render human
+
+  run:hidden:
+    desc: Executa a simulação sem interface gráfica (mais rápido)
+    cmds:
+      - python cartpole.py --render None --episodes 10
+
+  install:
+    desc: Instala apenas as dependências no ambiente atual
+    cmds:
+      - pip install gymnasium[classic-control] pygame
+
+  clean:
+    desc: Remove arquivos temporários e o ambiente virtual
+    cmds:
+      - "{{if eq OS \"windows\"}}rmdir /s /q venv{{else}}rm -rf venv{{end}}"
+      - "{{if eq OS \"windows\"}}del /q *.pyc{{else}}rm -f *.pyc{{end}}"
+    ignore_error: true
