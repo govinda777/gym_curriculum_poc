@@ -72,12 +72,67 @@ O CartPole possui um **Espaço de Ação Discreto**:
 
 ---
 
-## 📁 Estrutura do Projeto
+## 📁 Estrutura do Projeto e Arquitetura (SOLID)
+
+O projeto foi refatorado utilizando princípios de **Arquitetura de Software (SOLID)** para separar responsabilidades, tornando o código modular, testável e escalável para a transição para Redes Neurais nos próximos níveis.
+
+### 🧩 Diagrama de Componentes (Como funciona)
+
+```mermaid
+classDiagram
+    class cartpole_py {
+        +main()
+    }
+    class CartPoleSimulation {
+        +run(episodes, max_steps)
+        -_run_episode()
+    }
+    class BaseAgent {
+        <<interface>>
+        +act(observation) action
+    }
+    class RandomAgent {
+        +act(observation) action
+    }
+    class SimulationTelemetry {
+        +update(obs)
+        +reset_episode()
+    }
+    class DashboardRenderer {
+        +render(screen, frame, telemetry, action)
+    }
+
+    cartpole_py --> CartPoleSimulation : Instancia & Executa
+    CartPoleSimulation "1" *-- "1" BaseAgent : Utiliza (Injeção de Dependência)
+    CartPoleSimulation "1" *-- "1" SimulationTelemetry : Coleta Dados e Métricas
+    CartPoleSimulation "1" *-- "1" DashboardRenderer : Renderiza UI Avançada
+    RandomAgent ..|> BaseAgent : Implementa "BaseAgent"
+```
+
+### 🤝 Como os blocos conversam entre si:
+1. **`cartpole.py`**: É o grande "maestro" configurador. Ele lê a linha de comando (terminal), cria o `RandomAgent` e injeta ele na Simulação.
+2. **`CartPoleSimulation` (O Motor Central)**: Coordena o Loop do Motor Físico (Gymnasium).
+3. **A cada milissegundo de simulação**:
+    - A simulação captura a *Observação* (onde o pêndulo e o carro estão).
+    - Entrega a observação para o **Agente** (`agent.act(obs)`) que devolve a *Ação* (empurrar esquerda ou direita).
+    - O ambiente reage a ação, e o estado físico resultante é injetado em **`SimulationTelemetry`** para que salve os rastros/estatísticas.
+    - O sistema de interface **`DashboardRenderer`** desenha tudo bonitinho na tela, separando a lógica gráfica da física.
+
+### 🗂️ Nova Organização das Pastas
+
 ```text
 Level_0_CartPole/
-├── venv/           # Ambiente virtual (será criado por você)
-├── cartpole.py     # Script principal de execução
-└── README.md       # Documentação do projeto
+├── cartpole.py       # Ponto de entrada (Entrypoint).
+├── core/             # O núcleo e regras de negócio da simulação virtual.
+│   ├── simulation.py # Orquestrador principal. O loop infinito vive aqui.
+│   └── telemetry.py  # O analista de dados. Guarda vel., posiç., temp., etc.
+├── agents/           # Os cérebros jogando o jogo (Inteligência).
+│   ├── base.py       # Molde de como deve ser um agente.
+│   └── random.py     # Agente "bobo" que aperta botões ao acaso.
+├── visuals/          # Controle do Frontend/Display Gráfico (O Dashboard).
+│   ├── renderer.py   # Lógica do painel dashboard 100% isolado.
+│   └── theme.py      # CSS do dashboard (cores, fontes e layout coordenado).
+└── README.md         
 ```
 
 ---
